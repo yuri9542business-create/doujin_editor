@@ -1,0 +1,478 @@
+/* ============================================================
+   同人テキストエディタ - スタイルシート
+   ============================================================ */
+
+/* ===== リセット & CSS変数 ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* 背景・サーフェス */
+  --bg:        #1a1a1f;
+  --surface-1: #24242c;
+  --surface-2: #2c2c36;
+  --surface-3: #34343f;
+
+  /* ボーダー */
+  --border:    #3a3a48;
+  --border-hi: #5a5a72;
+
+  /* テキスト */
+  --text:      #e8e8f0;
+  --text-sub:  #9090a8;
+  --text-muted:#5a5a72;
+
+  /* アクセントカラー（紫系） */
+  --accent:    #a084e8;
+  --accent-dim:#6a54a8;
+  --accent-bg: #2a2240;
+
+  /* その他 */
+  --danger:    #e87070;
+  --radius:    6px;
+
+  /* フォント */
+  --font-ui:   'Hiragino Sans', 'Meiryo', sans-serif;
+  --font-mono: 'Menlo', 'Consolas', monospace;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  height: 100dvh;        /* 画面の高さいっぱい（dvh = スマホ対応版vh） */
+  display: flex;
+  flex-direction: column; /* 子要素を縦に積み上げる */
+  overflow: hidden;       /* はみ出しを隠す */
+}
+
+
+/* ===== ヘッダー ===== */
+.header {
+  height: 44px;
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 10px;
+  flex-shrink: 0; /* 高さを固定（縮まない） */
+}
+
+.header-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  margin-right: 4px;
+}
+
+.work-title-input {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 13px;
+  padding: 4px 10px;
+  width: 200px;
+  outline: none;
+  font-family: var(--font-ui);
+}
+.work-title-input:focus {
+  border-color: var(--accent);
+}
+
+/* ヘッダー中央の余白（右側ボタン群を右寄せにするため） */
+.header-space {
+  flex: 1;
+}
+
+.header-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-sub);
+  font-size: 12px;
+  padding: 4px 12px;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  transition: all 0.15s;
+}
+.header-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.header-btn.accent {
+  background: var(--accent-bg);
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+.header-btn.accent:hover {
+  background: var(--accent-dim);
+  color: #fff;
+}
+
+.save-status {
+  font-size: 11px;
+  color: var(--text-muted);
+  min-width: 60px;
+}
+
+
+/* ===== タグツールバー ===== */
+.toolbar {
+  height: 38px;
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--border);
+  padding: 0 14px;
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0; /* 高さを固定 */
+  overflow-x: auto; /* 横スクロール対応 */
+}
+
+/* サイト切り替えタブ（pixiv / カクヨム / ...） */
+.site-tabs {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  margin-right: 10px;
+  padding-right: 10px;
+  border-right: 1px solid var(--border); /* タグボタンとの区切り線 */
+}
+
+.site-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: var(--radius);
+  font-family: var(--font-ui);
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.site-tab:hover {
+  color: var(--text-sub);
+  background: var(--surface-2);
+}
+.site-tab.active {
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+
+/* タグボタン群 */
+.tag-buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  overflow-x: auto;
+}
+
+.tag-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-sub);
+  font-size: 11px;
+  font-family: var(--font-mono);
+  padding: 3px 9px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.tag-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+.tag-btn:active {
+  transform: scale(0.96); /* クリック時に少し縮む */
+}
+
+/* ＋タグ追加ボタン */
+.custom-add-btn {
+  background: transparent;
+  border: 1px dashed var(--border); /* 破線ボーダー */
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-size: 11px;
+  padding: 3px 9px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  font-family: var(--font-ui);
+}
+.custom-add-btn:hover {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+
+
+/* ===== エディタエリア ===== */
+.editor-area {
+  flex: 1;         /* 残りのスペースをすべて使う（WinFormsのDock:Fillに相当） */
+  display: flex;
+  overflow: hidden;
+}
+
+.editor-wrap {
+  position: relative; /* 文字数バッジの基準点 */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 文字数バッジ（テキストエリア右上に浮いて表示） */
+.char-count-badge {
+  position: absolute; /* editor-wrapを基準に絶対配置 */
+  top: 10px;
+  right: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+  pointer-events: none; /* クリックを透過（テキストエリアに届く） */
+  z-index: 10;
+  font-variant-numeric: tabular-nums; /* 数字の幅を統一 */
+  transition: color 0.2s;
+}
+/* 節目の文字数（1000・3000・5000字など）に達したとき光る */
+.char-count-badge.milestone {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+}
+
+/* テキストエリア本体 */
+#editor {
+  flex: 1;
+  width: 100%;
+  background: var(--surface-2);
+  color: var(--text);
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 16px;
+  line-height: 1.85;
+  padding: 44px 20px 20px 20px; /* 上を多めにしてバッジと重ならないように */
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Georgia', serif;
+  caret-color: var(--accent); /* カーソルの色 */
+}
+#editor::placeholder { color: var(--text-muted); }
+#editor::selection   { background: var(--accent-dim); }
+
+
+/* ===== 縦書きプレビューパネル ===== */
+.preview-panel {
+  width: 0;              /* 初期状態は幅ゼロ（非表示） */
+  overflow: hidden;
+  border-left: 1px solid var(--border);
+  background: var(--surface-1);
+  transition: width 0.3s ease; /* 開閉アニメーション */
+  display: flex;
+  flex-direction: column;
+}
+.preview-panel.open {
+  width: 380px; /* .openクラスが付いたら横に広がる */
+}
+
+.preview-header {
+  height: 38px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-sub);
+  flex-shrink: 0;
+}
+
+.preview-canvas-wrap {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 16px;
+}
+
+#previewCanvas {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  max-width: 100%;
+}
+
+
+/* ===== ステータスバー ===== */
+.statusbar {
+  height: 26px;
+  background: var(--surface-1);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.statusbar span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+
+/* ===== モーダル共通 ===== */
+.modal-overlay {
+  display: none;           /* 普段は非表示 */
+  position: fixed;
+  inset: 0;                /* top/right/bottom/left すべて0 = 全画面 */
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open {
+  display: flex; /* .openが付いたら中央に表示 */
+}
+
+.modal {
+  background: var(--surface-2);
+  border: 1px solid var(--border-hi);
+  border-radius: 10px;
+  padding: 24px;
+  width: 420px;
+  max-width: 90vw;
+}
+.modal h3 {
+  font-size: 15px;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.modal label {
+  font-size: 12px;
+  color: var(--text-sub);
+  display: block;
+  margin-bottom: 4px;
+}
+.modal input,
+.modal textarea,
+.modal select {
+  width: 100%;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 13px;
+  padding: 7px 10px;
+  font-family: var(--font-ui);
+  outline: none;
+  margin-bottom: 12px;
+}
+.modal input:focus,
+.modal textarea:focus,
+.modal select:focus {
+  border-color: var(--accent);
+}
+.modal-btns {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+.modal-btn {
+  padding: 7px 18px;
+  border-radius: var(--radius);
+  font-size: 13px;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  transition: all 0.15s;
+}
+.modal-btn.cancel {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-sub);
+}
+.modal-btn.cancel:hover {
+  border-color: var(--border-hi);
+  color: var(--text);
+}
+.modal-btn.ok {
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-dim);
+  color: var(--accent);
+}
+.modal-btn.ok:hover {
+  background: var(--accent-dim);
+  color: #fff;
+}
+
+
+/* ===== エクスポートモーダル固有 ===== */
+.export-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.export-tab {
+  flex: 1;
+  padding: 6px;
+  text-align: center;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--text-sub);
+  background: transparent;
+  font-family: var(--font-ui);
+  transition: all 0.15s;
+}
+.export-tab.active {
+  background: var(--accent-bg);
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+.export-content { display: none; }
+.export-content.active { display: block; }
+
+.export-preview {
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-sub);
+  max-height: 140px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+
+/* ===== 印刷スタイル ===== */
+@media print {
+  /* 印刷時はprintArea以外を非表示 */
+  body > *:not(#printArea) { display: none !important; }
+  #printArea { display: block !important; }
+}
+#printArea { display: none; }
+
+
+/* ===== スクロールバーのカスタマイズ ===== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-hi); }

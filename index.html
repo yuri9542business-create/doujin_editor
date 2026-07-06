@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>同人テキストエディタ</title>
+  <meta name="description" content="同人作家向けテキスト編集アプリ">
+  <!-- CSSを外部ファイルから読み込む -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== ヘッダー ===== -->
+  <header class="header">
+    <span class="header-title">✦ 同人エディタ</span>
+    <input class="work-title-input" id="workTitle" type="text" placeholder="作品タイトル" value="">
+    <div class="header-space"></div>
+    <span class="save-status" id="saveStatus">● 自動保存中</span>
+    <button class="header-btn" onclick="openExportModal()">エクスポート</button>
+    <button class="header-btn" onclick="openPrintPreview()">印刷プレビュー</button>
+    <button class="header-btn accent" id="previewToggleBtn" onclick="togglePreview()">縦書きプレビュー</button>
+  </header>
+
+  <!-- ===== タグツールバー ===== -->
+  <div class="toolbar">
+    <div class="site-tabs" id="siteTabs"></div>
+    <div class="tag-buttons" id="tagButtons"></div>
+    <button class="custom-add-btn" onclick="openCustomTagModal()">＋ タグ追加</button>
+  </div>
+
+  <!-- ===== メインエリア ===== -->
+  <div class="editor-area">
+    <div class="editor-wrap">
+      <div class="char-count-badge" id="charCount">0 文字</div>
+      <textarea id="editor" placeholder="ここに本文を入力してください…&#10;&#10;タグボタンで改ページなどの記号を素早く入力できます。"></textarea>
+    </div>
+    <aside class="preview-panel" id="previewPanel">
+      <div class="preview-header">
+        <span>縦書きプレビュー</span>
+        <button class="header-btn" onclick="togglePreview()" style="font-size:11px;padding:2px 8px;">閉じる</button>
+      </div>
+      <div class="preview-canvas-wrap">
+        <canvas id="previewCanvas"></canvas>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ===== ステータスバー ===== -->
+  <footer class="statusbar">
+    <span id="sb-chars">文字数：0</span>
+    <span id="sb-lines">行数：0</span>
+    <span id="sb-pages">約 0 ページ</span>
+    <span style="flex:1"></span>
+    <span id="sb-site">pixiv</span>
+  </footer>
+
+  <!-- ===== カスタムタグ追加モーダル ===== -->
+  <div class="modal-overlay" id="customTagModal">
+    <div class="modal">
+      <h3>タグを追加</h3>
+      <label>サイト</label>
+      <select id="ctSite"></select>
+      <label>ボタンのラベル（例：改ページ）</label>
+      <input type="text" id="ctLabel" placeholder="改ページ">
+      <label>挿入するテキスト（例：[newpage]）</label>
+      <input type="text" id="ctTag" placeholder="[newpage]" style="font-family:var(--font-mono)">
+      <div class="modal-btns">
+        <button class="modal-btn cancel" onclick="closeCustomTagModal()">キャンセル</button>
+        <button class="modal-btn ok" onclick="addCustomTag()">追加</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== エクスポートモーダル ===== -->
+  <div class="modal-overlay" id="exportModal">
+    <div class="modal" style="width:500px">
+      <h3>エクスポート</h3>
+      <div class="export-tabs" id="exportTabs"></div>
+      <div id="exportContents"></div>
+      <div class="modal-btns">
+        <button class="modal-btn cancel" onclick="closeExportModal()">閉じる</button>
+        <button class="modal-btn ok" onclick="copyExport()">クリップボードにコピー</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 印刷エリア（普段は非表示） ===== -->
+  <div id="printArea"></div>
+
+  <!-- JavaScriptを外部ファイルから読み込む（bodyの末尾に置くのがお作法） -->
+  <script src="script.js"></script>
+
+</body>
+</html>
